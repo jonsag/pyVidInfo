@@ -8,7 +8,7 @@ import sys, getopt, os
 # import modules from file modules.py
 from modules import (onError, usage, 
                      videoTypes, 
-                     findVideos, printVideoInfo)
+                     findVideos, printVideoInfo, findVideoBitrate)
 
 
 # handle options and arguments passed to script
@@ -17,7 +17,7 @@ try:
                                  'fri'
                                  'p:'
                                  'vh',
-                                 ['find', 'recursive', 'info', 'path=', 'verbose', 'help'])
+                                 ['find', 'recursive', 'info', 'vbr=', 'path=', 'verbose', 'help'])
 
 except getopt.GetoptError as e:
     onError(1, str(e))
@@ -29,6 +29,7 @@ if len(sys.argv) == 1:  # no options passed
 find = False
 recursive = False
 info = False
+videoBitrate = False
 path = False
 verbose = False
     
@@ -43,6 +44,8 @@ for option, argument in myopts:
         info = True    
     elif option in ('-p', '--path'):  # verbose output
         path = argument
+    elif option == '--vbr':  # verbose output
+        videoBitrate = argument
     elif option in ('-v', '--verbose'):  # verbose output
         verbose = True
     elif option in ('-h', '--help'):  # display help text
@@ -74,9 +77,31 @@ if videos and info:
     for video in videos:
         printVideoInfo(video, verbose)
         
+if videoBitrate:
     
+    if videoBitrate.startswith("+"):
+        vbrLargerThan = True
+        text = "larger"
+    elif videoBitrate.startswith("-"):
+        vbrLargerThan = False
+        text = "less"
+    else:
+        onError(6, "Argument must start with either '+' or '-'")
+        
+    try:
+        videoBitrate = int(videoBitrate[1:])
+    except:
+        onError(7, "Everything after '+' or '-' in %s \nmust be integers" % videoBitrate)
+        
+    print("\nFinding files with bitrate %s than %s kbps..." % (text, videoBitrate))
     
+    videos = findVideoBitrate(videos, vbrLargerThan, videoBitrate, verbose)
     
+    videos = sorted(videos, key=lambda k: k['videoBitrate']) 
+    
+    for video in videos:
+        #print(video)
+        print("\n%s\n%s" % (video['file'], video['videoBitrate']))
     
     
     
