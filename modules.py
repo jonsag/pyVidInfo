@@ -154,6 +154,17 @@ def findVideoBitrate(files, vbrLargerThan, videoBitrate, verbose):
                         
         
         
+############################ file size ############################
+def convert_bytes(num):
+    for x in ['bytes', 'KiB', 'MiB', 'GiB', 'TiB']:
+        if num < 1024.0:
+            return "%3.1f %s" % (num, x)
+        num /= 1024.0
+
+
+def file_size(file_path):
+    file_info = os.stat(file_path)
+    return convert_bytes(file_info.st_size)
         
         
         

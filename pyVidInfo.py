@@ -7,7 +7,7 @@ import sys, getopt, os
 
 # import modules from file modules.py
 from modules import (onError, usage, 
-                     videoTypes, 
+                     videoTypes, file_size, 
                      findVideos, printVideoInfo, findVideoBitrate)
 
 
@@ -101,7 +101,8 @@ if videoBitrate:
     
     for video in videos:
         #print(video)
-        print("\n%s\n%s" % (video['file'], video['videoBitrate']))
+        print("\n%s \n-------------------- }\nFile Size: %s \nVideo Bitrate: %s kbps" % 
+              (video['file'], file_size(video['file']), video['videoBitrate']))
     
     
     
