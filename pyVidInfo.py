@@ -6,10 +6,9 @@
 import sys, getopt, os
 
 # import modules from file modules.py
-from modules import (onError, usage, 
-                     videoTypes, file_size, 
+from modules import (onError, usage,
+                     videoTypes, file_size,
                      findVideos, printVideoInfo, findVideoBitrate)
-
 
 # handle options and arguments passed to script
 try:
@@ -56,63 +55,57 @@ if path:  # argument -p --path passed
     if not os.path.isdir(path):  # not a valid path
         onError(4, "%s is not a valid path" % path)
     else:
-        path = os.path.abspath(path) # construct absolute path
+        path = os.path.abspath(path)  # construct absolute path
 else:
-    path = os.path.abspath(os.getcwd()) # set path to current path
+    path = os.path.abspath(os.getcwd())  # set path to current path
     onError(5, "\nNo path given.\nUsing current dir")
         
-if find: # search for videos
-    if recursive: # search recursively
+if find:  # search for videos
+    if recursive:  # search recursively
         print("\nSearching recursively for video files in \n%s ..." % path)
     else:
         print("\nSearching for video files in \n%s ..." % path)
     
-    videos = findVideos(path, recursive, videoTypes, verbose) # search videos
+    videos = findVideos(path, recursive, videoTypes, verbose)  # search videos
     
-    if videos: # videos found
+    if videos:  # videos found
         print("\nFound %s video files" % len(videos))
     else:
         print("\nDidn't find any videos")
     
-if videos and info: # found videos and presenting info
+if videos and info:  # found videos and presenting info
     for video in videos:
         printVideoInfo(video, verbose)
         
-if videoBitrate: # if searching by video bitrate
+if videoBitrate:  # if searching by video bitrate
     
-    if videoBitrate.startswith("+"): # video bitrate larger than
+    if videoBitrate.startswith("+"):  # video bitrate larger than
         vbrLargerThan = True
         text = "larger"
-    elif videoBitrate.startswith("-"): # video bitrate smaller than
+    elif videoBitrate.startswith("-"):  # video bitrate smaller than
         vbrLargerThan = False
         text = "less"
     else:
         onError(6, "Argument must start with either '+' or '-'")
         
     try:
-        videoBitrate = int(videoBitrate[1:]) # checking if characters after first is integer
+        videoBitrate = int(videoBitrate[1:])  # checking if characters after first is integer
     except:
         onError(7, "Everything after '+' or '-' in %s \nmust be integers" % videoBitrate)
         
     print("\nFinding files with bitrate %s than %s kbps..." % (text, videoBitrate))
     
-    videos = findVideoBitrate(videos, vbrLargerThan, videoBitrate, verbose) # checking if found videos meets criteria
+    videos = findVideoBitrate(videos, vbrLargerThan, videoBitrate, verbose)  # checking if found videos meets criteria
     
-    videos = sorted(videos, key=lambda k: k['videoBitrate']) # sort by videoBitrate, smallest first 
+    videos = sorted(videos, key=lambda k: k['videoBitrate'])  # sort by videoBitrate, smallest first 
     
     for video in videos:
-        print("\n%s " # print result
+        print("\n%s "  # print result
               "\n-------------------- }\n"
               "File Size: %s \n"
               "Video Bitrate: %s kbps" % 
-              (video['file'], 
-               file_size(video['file']), 
+              (video['file'],
+               file_size(video['file']),
                video['videoBitrate']))
-    
-    
-    
-    
-    
-    
     
     

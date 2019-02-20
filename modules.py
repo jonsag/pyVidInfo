@@ -6,7 +6,6 @@ import configparser, os, sys, glob
 
 from pymediainfo import MediaInfo
 
-
 config = configparser.ConfigParser()  # define config file
 config.read("%s/config.ini" % os.path.dirname(os.path.realpath(__file__)))  # read config file
 
@@ -15,16 +14,17 @@ var = config.get('header', 'var').strip()
 
 videoTypes = (config.get('video', 'videoTypes')).split(',')  # allowed file types
 
+
 # handle errors
 def onError(errorCode, extra):
     print("\nError:")
-    if errorCode in(1, 2): # prints error message and then prints usage
+    if errorCode in(1, 2):  # prints error message and then prints usage
         print(extra)
         usage(errorCode)
-    elif errorCode in (4, 6, 7): # prints error message and then exits
+    elif errorCode in (4, 6, 7):  # prints error message and then exits
         print(extra)
         sys.exit(errorCode)
-    elif errorCode in (5, 8, 9): # prints error message and then continues
+    elif errorCode in (5, 8, 9):  # prints error message and then continues
         print(extra)
         
         
@@ -56,6 +56,7 @@ def findVideos(path, recursive, videoTypes, verbose):
             foundVideos.append(myFile)
             
     return foundVideos
+
 
 def checkIfVideo(myFile, videoTypes, verbose):
     isVideo = False
@@ -99,7 +100,7 @@ def printVideoInfo(file, verbose):
             print("Video:")
             print("     Bit rate: %s" % track.other_bit_rate[0])
             print("     Stream size: %s" % track.other_stream_size[4])
-            #print("     Bit rate mode: %s" % track.bit_rate_mode)
+            # print("     Bit rate mode: %s" % track.bit_rate_mode)
             print("     Codec: %s" % track.codec)
             print("     Encoding library: %s" % track.encoded_library_name)
             print("     Width x height: %s x %s" % (track.width, track.height))
@@ -109,11 +110,10 @@ def printVideoInfo(file, verbose):
             print("Audio:")
             print("     Bit rate: %s" % track.other_bit_rate[0])
             print("     Stream size: %s" % track.other_stream_size[4])
-            #print("     Bit rate mode: %s" % track.bit_rate_mode)
+            # print("     Bit rate mode: %s" % track.bit_rate_mode)
             print("     Codec: %s" % track.codec)    
-     
         
-    #for track in mi.tracks:
+    # for track in mi.tracks:
     #    if track.track_type == 'Video':
     #        for attr, value in track.__dict__.items():
     #            print(attr, value)
@@ -158,8 +158,5 @@ def convert_bytes(num):
 def file_size(file_path):
     file_info = os.stat(file_path)
     return convert_bytes(file_info.st_size)
-        
-        
-        
         
         

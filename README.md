@@ -17,3 +17,7 @@ python mediainfo wrapper - https://github.com/sbraz/pymediainfo
 --------------------
 >$ sudo pip3 install pymediainfo  
 
+Installation
+====================
+Copy all files to desired location  
+
