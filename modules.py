@@ -6,12 +6,6 @@ import configparser, os, sys, glob
 
 from pymediainfo import MediaInfo
 
-#from bs4 import BeautifulSoup as BS
-
-#from ppretty import ppretty
-
-#import pprint
-
 
 config = configparser.ConfigParser()  # define config file
 config.read("%s/config.ini" % os.path.dirname(os.path.realpath(__file__)))  # read config file
@@ -152,7 +146,6 @@ def findVideoBitrate(files, vbrLargerThan, videoBitrate, verbose):
                      
     return foundFiles
                         
-        
         
 ############################ file size ############################
 def convert_bytes(num):
